@@ -37,7 +37,7 @@ Whisper Chat App is a real-time one-to-one chat application that enables users t
 
 ```bash
 git clone https://github.com/your-username/whisper-chat-app.git
-
+```
 ## UI
 
 To see the user interface, [click here](https://tanvir-abid.github.io/whisper)
