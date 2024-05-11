@@ -22,8 +22,6 @@ const database = getDatabase(app);
 
 //==================================//
 document.addEventListener('DOMContentLoaded', async () => {
-  displayLoadingAnimation();
-
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const uid = user.uid;
@@ -34,24 +32,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           createMainContainer(docSnap.data());
-          removeLoadingAnimation();
         } else {
           console.log("No such document!");
-          removeLoadingAnimation();
         }
       }
 
       fetchData(); 
     } else {
       createCredentialContainer();
-      removeLoadingAnimation();
     }
   });
 });
 
 //==============================================//
 function createCredentialContainer() {
-  removeLoadingAnimation();
   // Create credential-container div
   const credentialContainer = document.createElement('div');
   credentialContainer.id = 'credential-container';
@@ -424,7 +418,6 @@ function displayModalForUserEmail(callback) {
 
 //==================================//
 async function createMainContainer(userInfo) {
-  removeLoadingAnimation();
   // Create main-container div
   const mainContainer = document.createElement("div");
   mainContainer.classList.add("main-container");
@@ -1263,22 +1256,4 @@ function convertToLocalTime(timestamp) {
   };
   const localDateTime = date.toLocaleString(undefined, options);
   return localDateTime;
-}
-
-function displayLoadingAnimation(){
-  const animationContainer = document.createElement("div");
-  animationContainer.id = 'loading-container';
-  animationContainer.innerHTML = `
-    <div>
-    <i class='bx bx-loader bx-spin'></i>
-    </div>
-  `;
-  document.body.appendChild(animationContainer);
-}
-
-function removeLoadingAnimation(){
-  const animationContainer = document.getElementById('loading-container');
-  if(animationContainer){
-    animationContainer.remove();
-  }
 }
