@@ -295,6 +295,10 @@ main{
   position: relative;
 }
 
+.list-holder{
+  min-height: 90%;
+}
+
 .connection-list-header .list-header-main{
   display: flex;
   align-items: center;
@@ -302,11 +306,17 @@ main{
   font-size: 17px;
 }
 
+.action-button-container{
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
 .reload-span,
 .options-span,
 .new-connection{
     cursor: pointer;
-    font-size: 25px;
+    font-size: 27px;
     font-weight: bolder;
 }
 
@@ -327,8 +337,9 @@ main{
 }
 
 .connection-list-container li {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 3px;
@@ -717,22 +728,11 @@ main{
   .conversation-contents{
     margin: 0;
   }
+
+  .responder-name p strong{
+    font-size: 18px;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Modal styles */
 .modal {
@@ -772,7 +772,7 @@ main{
 }
 
 .modal-header button{
-  font-size: 20px;
+  font-size: 30px;
   border: none;
   background-color: transparent;
   color: #fff;
@@ -796,6 +796,11 @@ main{
   transition: all 0.3s ease;
   display: flex;
   align-self: flex-end;
+  transition: all 0.3s ease;
+}
+
+.modal-body button:hover{
+  background-color: #dc0a3e;
 }
 
 .modal-content form{
@@ -843,8 +848,60 @@ main{
   background-color: #f90233; 
 }
 
+.modal-body .settings-container form button{
+  margin: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.modal-body .settings-container form button i{
+  font-size: 18px;
+}
+
+.settings-container .setting-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px ;
+  background-color: rgb(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 5px;
+  border-radius: 8px;
+}
+
+.setting-group .group-values{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.setting-group .group-values .edit-icon{
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.setting-group .group-values button{
+  width: 100%;
+  justify-content: center;
+  min-width: 100px;
+}
+
+.setting-group .group-values button i{
+  font-size: 20px;
+}
+
 @media screen and (max-width: 768px) {
   .modal-content{
     width: 95%;
+  }
+
+  .settings-container .setting-group{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .change-password .group-values{
+    justify-content: center;
+    width: 100%;
   }
 }

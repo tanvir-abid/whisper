@@ -464,6 +464,7 @@ async function createMainContainer(userInfo) {
   headerMain.appendChild(pTag);
 
   const connectionHeaderBtnContainer = document.createElement('div');
+  connectionHeaderBtnContainer.className = 'action-button-container';
   const reloadSpan = document.createElement('span');
   reloadSpan.className = 'reload-span';
   reloadSpan.innerHTML = "<i class='bx bx-refresh'></i>";
@@ -483,6 +484,9 @@ async function createMainContainer(userInfo) {
   //------------------------------------------//
   const listHolder = document.createElement('div');
   listHolder.classList.add('list-holder');
+  listHolder.addEventListener('click', ()=>{
+    hideMenuOptions();
+  })
 
   const loading = document.createElement('div');
   loading.className = 'loading center';
@@ -683,6 +687,9 @@ async function createMainContainer(userInfo) {
         <h1>No Conversation<h1>
       </div>
   `;
+  conversationContainer.addEventListener('click', ()=>{
+    hideMenuOptions();
+  })
 
   // Append navbar-container and conversation-container to main-container
   mainContainer.appendChild(navbarContainer);
@@ -702,8 +709,7 @@ async function createMainContainer(userInfo) {
   });
 
   settingItem.addEventListener('click', ()=>{
-    console.log('Setting button clicked..');
-    displayWarning('Setting option will be added soon. stay with Whisper. Thank you.')
+    createSettingsModal(userInfo);
   });
 
   reloadSpan.addEventListener('click', async () => {
@@ -751,9 +757,14 @@ async function createMainContainer(userInfo) {
       console.log("No such document!");
     }
   });
+
+  function hideMenuOptions(){
+    if(headerMenuOptionContainer.classList.contains('show')){
+      headerMenuOptionContainer.classList.remove('show');
+    }
+  }
   
 }
-
 
 function handleNewConnection(callback,user) {
   // Create modal
@@ -1027,9 +1038,9 @@ function populateConversationMsg(owner,friend,data) {
     if (!firstLoad) {
       let msgObj = data.val();
       singleMessageContent(msgObj);
-      if(owner.id !== msgObj.sender){
-        notify();
-      }
+      // if(owner.id !== msgObj.sender){
+      //   notify();
+      // }
 
     }
   }
@@ -1268,4 +1279,119 @@ function convertToLocalTime(timestamp) {
 function notify(){
   const audio = new Audio('sound/message-alert.mp3');
   audio.play();
+}
+
+//=======================//
+
+function createSettingsModal(userProfile) {
+  // Create modal
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  
+  // Create modal header
+  const modalHeader = document.createElement('div');
+  modalHeader.className = 'modal-header';
+  const headerTitle = document.createElement('h3');
+  headerTitle.innerHTML = "<i class='bx bx-cog' ></i> Settings";
+  const closeButton = document.createElement('button');
+  closeButton.innerHTML = "<i class='bx bx-x' ></i>";
+  closeButton.addEventListener('click', () => {
+    modal.remove(); // Remove the modal on close button click
+  });
+  modalHeader.appendChild(headerTitle);
+  modalHeader.appendChild(closeButton);
+
+  // Create modal content container
+  const modalContent = document.createElement('div');
+  modalContent.className = 'modal-content';
+
+  // Create modal body
+  const modalBody = document.createElement('div');
+  modalBody.className = 'modal-body';
+
+  const settingsContainer = document.createElement('div');
+  settingsContainer.className = 'settings-container';
+
+  const idGroup = createSettingGroup('ID', userProfile.id);
+  const nameGroup = createSettingGroup('Name', userProfile.name);
+  const emailGroup = createSettingGroup('Email', userProfile.email);
+  // Append setting groups to the settings container
+  settingsContainer.appendChild(idGroup);
+  settingsContainer.appendChild(nameGroup);
+  settingsContainer.appendChild(emailGroup);
+
+  const changePassGroup = document.createElement('div');
+  changePassGroup.className = "setting-group change-password";
+
+  const changePassH3 = document.createElement('h4');
+  changePassH3.innerHTML = "<i class='bx bx-lock-alt'></i> Do you want to change your password?";
+  changePassGroup.appendChild(changePassH3);
+
+  const groupValues = document.createElement('div');
+  groupValues.classList.add('group-values');
+
+  const changePassBtn = document.createElement('button');
+  changePassBtn.type = 'button';
+  changePassBtn.innerHTML = 'Change Password';
+  // Add click event to changePassBtn
+  changePassBtn.addEventListener('click', function(event) {
+      event.preventDefault(); 
+      changePassBtn.innerHTML = "<i class='bx bx-loader bx-spin' ></i>";
+
+      sendPasswordResetEmail(auth, userProfile.email)
+      .then(() => {
+        changePassBtn.innerHTML = 'Change Password';
+        displayWarning(`A password reset mail has been sent to ${userProfile.email}. Check your email to reset your password. Thank you.`)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        changePassBtn.innerHTML = 'Change Password';
+      });
+  });
+
+  groupValues.appendChild(changePassBtn);
+  changePassGroup.appendChild(groupValues);
+
+  settingsContainer.appendChild(changePassGroup);
+
+  modalBody.appendChild(settingsContainer);
+  // Append modal header and content to modal
+  modalContent.appendChild(modalHeader);
+  modalContent.appendChild(modalBody);
+
+  // Append modal content to modal
+  modal.appendChild(modalContent);
+
+  // Append modal to body
+  document.body.appendChild(modal);
+
+}
+
+// Function to create setting groups
+function createSettingGroup(key, value) {
+  const groupContainer = document.createElement('div');
+  groupContainer.classList.add('setting-group');
+  const icons = {
+    ID: "<i class='bx bxs-user-badge'></i>",
+    Name: "<i class='bx bx-user-circle' ></i>",
+    Email: "<i class='bx bx-envelope' ></i>",
+  };
+  const groupKey = document.createElement('h3');
+  groupKey.innerHTML = `${icons[key]} ${key}`;
+
+  const groupValues = document.createElement('div');
+  groupValues.classList.add('group-values');
+
+    // For email, just display the value without edit option
+    const valueParagraph = document.createElement('p');
+    valueParagraph.textContent = value;
+    groupValues.appendChild(valueParagraph);
+
+
+  groupContainer.appendChild(groupKey);
+  groupContainer.appendChild(groupValues);
+
+  return groupContainer;
 }
