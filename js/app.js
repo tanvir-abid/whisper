@@ -541,7 +541,6 @@ async function createMainContainer(userInfo) {
         }
         processedKeys.add(data.key); 
         if(userInfo.id !== data.val().sender){
-          console.log(data.key);
           notify();
         }
       }
