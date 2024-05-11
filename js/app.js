@@ -1022,8 +1022,13 @@ function populateConversationMsg(owner,friend,data) {
   // Function to handle messages
   function handleMessage(data) {
     if (!firstLoad) {
-      // Execute this block only after the first load
-      singleMessageContent(data.val());
+      let msgObj = data.val();
+
+      singleMessageContent(msgObj);
+      if(owner.id !== msgObj.sender){
+        const audio = new Audio('sound/message-alert.mp3');
+        audio.play();
+      }
     }
   }
   // Handle initial load
