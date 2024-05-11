@@ -540,6 +540,10 @@ async function createMainContainer(userInfo) {
               displayNewSpan.classList.add('new');  
         }
         processedKeys.add(data.key); 
+        if(userInfo.id !== data.val().sender){
+          console.log(data.key);
+          notify();
+        }
       }
     });
   
@@ -1023,12 +1027,11 @@ function populateConversationMsg(owner,friend,data) {
   function handleMessage(data) {
     if (!firstLoad) {
       let msgObj = data.val();
-
       singleMessageContent(msgObj);
       if(owner.id !== msgObj.sender){
-        const audio = new Audio('sound/message-alert.mp3');
-        audio.play();
+        notify();
       }
+
     }
   }
   // Handle initial load
@@ -1261,4 +1264,9 @@ function convertToLocalTime(timestamp) {
   };
   const localDateTime = date.toLocaleString(undefined, options);
   return localDateTime;
+}
+
+function notify(){
+  const audio = new Audio('sound/message-alert.mp3');
+  audio.play();
 }
