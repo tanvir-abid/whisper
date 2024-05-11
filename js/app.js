@@ -37,12 +37,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           removeLoadingAnimation();
         } else {
           console.log("No such document!");
+          removeLoadingAnimation();
         }
       }
 
       fetchData(); 
     } else {
       createCredentialContainer();
+      removeLoadingAnimation();
     }
   });
 });
