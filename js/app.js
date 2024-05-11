@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
 import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-import { getFirestore,setDoc,doc,getDoc,updateDoc, deleteField,collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
-import { getDatabase,ref, set,push, onChildAdded,child, get,remove } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+import { getFirestore,setDoc,doc,getDoc,updateDoc,  collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+import { getDatabase,ref, set,push,serverTimestamp, onChildAdded,child, get,remove } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCREwUA-9nS_l2YR4RCFO804_cQ6uuxWX4",
@@ -1134,7 +1134,7 @@ function createConversationInput(ownerObj, conversationObj) {
     if (messageText !== "") {
       const newMessageToSend = {
         sender: ownerObj.id,
-        timestamp: new Date().toISOString(),
+        timestamp: serverTimestamp(),
         message: messageText
       };
 
