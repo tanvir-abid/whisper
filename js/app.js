@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 //==============================================//
 function createCredentialContainer() {
+  removeLoadingAnimation();
   // Create credential-container div
   const credentialContainer = document.createElement('div');
   credentialContainer.id = 'credential-container';
@@ -423,6 +424,7 @@ function displayModalForUserEmail(callback) {
 
 //==================================//
 async function createMainContainer(userInfo) {
+  removeLoadingAnimation();
   // Create main-container div
   const mainContainer = document.createElement("div");
   mainContainer.classList.add("main-container");
